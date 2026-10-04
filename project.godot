@@ -1,0 +1,29 @@
+config_version=5
+
+[application]
+config/quit_on_go_back=false
+config/name="重力四子棋 · Gravity Four"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[display]
+window/handheld/orientation=6
+window/subwindows/embed_subwindows=true
+window/size/viewport_width=1280
+window/size/viewport_height=900
+window/size/window_width_override=1280
+window/size/window_height_override=900
+window/size/min_width=360
+window/size/min_height=360
+window/stretch/mode="canvas_items"
+
+[rendering]
+textures/vram_compression/import_etc2_astc=true
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+environment/defaults/default_clear_color=Color(0.035, 0.055, 0.09, 1)
+
+[input_devices]
+pointing/emulate_mouse_from_touch=true

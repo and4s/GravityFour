@@ -1,0 +1,27 @@
+.godot/
+.artifacts/
+tools/*
+!tools/*.py
+!tools/README.md
+!tools/.gdignore
+dist/
+*.log
+*.zip
+*.apk.idsig
+
+# Private signing material and machine-specific credentials
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key
+*password*.txt
+.env
+.env.*
+!.env.example
+# Local Python / editor files
+__pycache__/
+*.pyc
+.vscode/
+.idea/
