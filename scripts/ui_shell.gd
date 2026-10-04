@@ -49,7 +49,6 @@ var room_summary: Label
 var room_bar: VBoxContainer
 var rematch_button: Button
 var rematch_status: Label
-var github_repo := ""
 var update_status: Label
 var update_button: Button
 var release_button: Button
@@ -338,7 +337,6 @@ func _field(parent: Node, caption: String, value: String, secret: bool = false) 
 
 func _build_forms() -> void:
 	var settings: Dictionary = g.profiles.data.settings
-	github_repo = str(settings.get("github_repo", g.updater.info.get("github_repo", "")))
 	g.updater.changed.connect(_refresh_update)
 	# Persistent hidden inputs keep the backend and settings independent from page layout.
 	var hidden := Control.new()
@@ -904,27 +902,19 @@ func show_match_detail(record_data: Dictionary) -> void:
 func show_about() -> void:
 	var box := page("about", true)
 	text(box, "三维重力四子棋 v" + g.UpdateChecker.VERSION, 22, JADE)
-	text(box, "作者：" + str(g.updater.info.get("author", "待填写")), 17)
+	text(box, "作者：" + str(g.updater.info.get("author", "and4s")), 17)
 	text(box, str(g.updater.info.get("support_text", "打赏信息待填写")), 16, MUTED)
 	var support_url := str(g.updater.info.get("support_url", ""))
 	if support_url.begins_with("https://"):
 		box.add_child(g.button("支持作者 / 打赏", func() -> void: OS.shell_open(support_url)))
-	var repo_input := _field(box, "公开 GitHub 仓库 · 用户名/仓库名", github_repo)
-	box.add_child(g.button("保存仓库地址", func() -> void:
-		var repo: String = g.UpdateChecker.repository(repo_input.text)
-		if repo.is_empty(): update_status.text = "请输入有效 GitHub 仓库。"; return
-		github_repo = repo
-		g._save_settings()
-		update_status.text = "已保存仓库。"))
+	text(box,"GitHub：" + g.UpdateChecker.REPOSITORY_URL,16,JADE)
+	box.add_child(g.button("打开 GitHub 仓库",func() -> void: OS.shell_open(g.UpdateChecker.REPOSITORY_URL)))
 	update_status = text(box, g.updater.status, 15, MUTED)
-	update_button = g.button("检查更新", func() -> void:
-		var repo: String = g.UpdateChecker.repository(repo_input.text)
-		if not repo.is_empty(): github_repo = repo; g._save_settings()
-		g.updater.check(repo))
+	update_button = g.button("检查更新", g.updater.check)
 	box.add_child(update_button)
 	release_button = g.button("打开新版发布页面", func() -> void: OS.shell_open(g.updater.release_url), true)
 	box.add_child(release_button)
-	text(box, "更新检查读取 GitHub 正式 Release；下载与安装由你操作，保留原有用户数据需使用相同 APK 签名。作者和默认仓库由 assets/app_info.json 配置。", 14, MUTED)
+	text(box, "更新检查读取本项目的 GitHub 正式 Release。下载与安装由你操作；安卓覆盖更新需使用相同签名。", 14, MUTED)
 	show_page("about", "关于与更新", "VERSION / AUTHOR")
 	_refresh_update()
 

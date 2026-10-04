@@ -1044,7 +1044,7 @@ func _save_settings() -> void:
 		"address": address_input.text, "port": int(port_input.value), "confirm_move": confirm_check.button_pressed, "double_tap_move": double_tap_check.button_pressed, "connection_guides": ui.guide_check.button_pressed, "ai_seconds": ai_budget.value,
 		"fps_limit": fps_limit, "vsync": ui.vsync_check.button_pressed,
 		"background_limit": ui.background_check.button_pressed, "low_power_render": ui.quality_choice.selected == 1}
-	profiles.data.settings["github_repo"] = ui.github_repo
+	profiles.data.settings["github_repo"] = UpdateChecker.REPOSITORY
 	profiles.data.settings["ruleset"] = ui.rule_choice.selected
 	profiles.data.settings["series_target"] = 2+ui.series_choice.selected
 	profiles.data.settings["rules_version"] = 38

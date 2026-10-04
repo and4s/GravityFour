@@ -4,9 +4,9 @@
 
 ## 作者、打赏和仓库
 
-编辑 `assets/app_info.json`：`author` 为作者署名，`support_text` 为打赏说明，`support_url` 可填写 HTTPS 打赏页面，`github_repo` 为 `用户名/仓库名`。空链接不会显示跳转按钮。随后重新构建，关于页面展示这些信息。
+编辑 `assets/app_info.json`：`author` 为作者署名（当前为 `and4s`），`support_text` 为打赏说明，`support_url` 可填写 HTTPS 打赏页面，`github_repo` 记录 `and4s/GravityFour`，实际仓库链接与更新端点固定于 `scripts/update_checker.gd`。空链接不会显示跳转按钮。随后重新构建，关于页面展示这些信息。
 
-用户也可在“设置 → 关于 / 作者 / 检查更新”填写公开仓库地址并保存。检查更新请求 GitHub `/repos/{owner}/{repo}/releases/latest`，使用 HTTPS，不上传用户名、对局记录或成绩。未配置仓库时不会发送请求。更新检查由按钮触发，未加入后台自动轮询。
+“设置 → 关于 / 作者 / 检查更新”展示固定仓库链接，点击检查更新请求 `https://api.github.com/repos/and4s/GravityFour/releases/latest`，使用 HTTPS，不上传用户名、对局记录或成绩。旧设置中自定义的仓库地址不再用于更新。检查由按钮触发，未加入后台自动轮询。
 
 发布正式 Release，标签使用 `v3.9.1` 这样的三段数字版本；预发布和仅创建 Git tag 不会作为正式更新。检查到较新版本后打开 Release 页面，用户选择对应 Windows ZIP 或 Android APK 下载、更新。
 

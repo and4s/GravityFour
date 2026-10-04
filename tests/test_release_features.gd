@@ -44,17 +44,20 @@ func run() -> void:
 	check(game.UpdateChecker.repository("https://github.com/example/game/") == "example/game", "normalize GitHub repository URL")
 	check(game.UpdateChecker.repository("example/game?token=secret").is_empty(), "reject invalid repository URLs")
 	check(game.UpdateChecker.newer("v3.10.0", "3.9.0") and not game.UpdateChecker.newer("v3.9.0", "3.9.0") and not game.UpdateChecker.newer("3.9.1-beta", "3.9.0"), "numeric version comparison excludes prereleases")
-	game.updater.check("")
-	check(not game.updater.busy and game.updater.release_url.is_empty(), "unconfigured repository never starts network request")
-	game.updater._completed(HTTPRequest.RESULT_SUCCESS, 200, [], JSON.stringify({"tag_name":"v3.9.1","html_url":"https://github.com/example/game/releases/tag/v3.9.1"}).to_utf8_buffer())
+	check(game.UpdateChecker.RELEASE_API_URL == "https://api.github.com/repos/and4s/GravityFour/releases/latest", "update endpoint is fixed to project repository")
+	game.updater._completed(HTTPRequest.RESULT_SUCCESS, 200, [], JSON.stringify({"tag_name":"v3.9.1","html_url":"https://github.com/and4s/GravityFour/releases/tag/v3.9.1"}).to_utf8_buffer())
 	check(not game.updater.release_url.is_empty(), "new release exposes manual download page")
 	game.updater._completed(HTTPRequest.RESULT_SUCCESS, 404, [], "{}".to_utf8_buffer())
 	check("Release" in game.updater.status, "missing release reports actionable status")
 	game.ui.show_about()
 	check(game.ui.current_page == "about" and not game.updater.info.author.is_empty(), "about page and metadata load")
-	game.ui.github_repo = "example/game"
+	check(game.updater.info.author == "and4s", "author matches GitHub login")
+	check(game.ui.pages.about.find_children("*","LineEdit",true,false).is_empty(), "repository address is read-only")
+	game.updater._completed(HTTPRequest.RESULT_SUCCESS,200,[],JSON.stringify({"tag_name":"v3.9.1","html_url":"https://github.com/example/game/releases/tag/v3.9.1"}).to_utf8_buffer())
+	check(game.updater.release_url.is_empty(), "foreign repository release URL is rejected")
+	game.profiles.data.settings.github_repo = "example/game"
 	game._save_settings()
-	check(game.Profiles.new(game.profiles.path).data.settings.github_repo == "example/game", "repository preference persists")
+	check(game.Profiles.new(game.profiles.path).data.settings.github_repo == "and4s/GravityFour", "legacy custom update repository is replaced")
 	game.mode = "client"
 	game.leave_room()
 	await create_timer(0.3).timeout

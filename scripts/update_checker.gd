@@ -1,9 +1,12 @@
 extends Node
 
 const VERSION := "3.9.0"
+const REPOSITORY := "and4s/GravityFour"
+const REPOSITORY_URL := "https://github.com/" + REPOSITORY
+const RELEASE_API_URL := "https://api.github.com/repos/" + REPOSITORY + "/releases/latest"
 signal changed
 var info: Dictionary = {}
-var status := "填写 GitHub 仓库后可检查更新。"
+var status := "点击检查更新，获取最新正式版本。"
 var release_url := ""
 var busy := false
 var request: HTTPRequest
@@ -11,6 +14,7 @@ var request: HTTPRequest
 func _ready() -> void:
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://assets/app_info.json"))
 	if parsed is Dictionary: info = parsed
+	info["github_repo"] = REPOSITORY
 	request = HTTPRequest.new()
 	request.timeout = 12
 	request.body_size_limit = 1048576
@@ -35,18 +39,13 @@ static func newer(tag: String, current: String = VERSION) -> bool:
 		if a != b: return a > b
 	return false
 
-func check(repo: String) -> void:
+func check() -> void:
 	if busy: return
 	release_url = ""
-	repo = repository(repo)
-	if repo.is_empty():
-		status = "请填写有效仓库：用户名/仓库名，或 GitHub 仓库链接。"
-		changed.emit()
-		return
 	busy = true
 	status = "正在检查 GitHub 最新正式版本…"
 	changed.emit()
-	var error := request.request("https://api.github.com/repos/%s/releases/latest" % repo, ["Accept: application/vnd.github+json", "X-GitHub-Api-Version: 2026-03-10", "User-Agent: GravityFour/" + VERSION])
+	var error := request.request(RELEASE_API_URL, ["Accept: application/vnd.github+json", "X-GitHub-Api-Version: 2026-03-10", "User-Agent: GravityFour/" + VERSION])
 	if error != OK:
 		busy = false
 		status = "无法启动更新检查：" + error_string(error)
@@ -54,6 +53,7 @@ func check(repo: String) -> void:
 
 func _completed(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	busy = false
+	release_url = ""
 	if result != HTTPRequest.RESULT_SUCCESS:
 		status = "检查失败，请检查网络连接后重试。"
 	elif code == 404:
@@ -74,7 +74,7 @@ func _completed(result: int, code: int, _headers: PackedStringArray, body: Packe
 				status = "Release 标签需为 v数字.数字.数字，例如 v3.9.1。"
 			elif newer(tag):
 				var url := str(data.get("html_url", ""))
-				if url.begins_with("https://github.com/"):
+				if url.begins_with(REPOSITORY_URL + "/releases/"):
 					release_url = url
 					status = "发现新版本 %s，当前版本 %s。" % [tag, VERSION]
 				else: status = "更新页面地址无效。"
