@@ -2,7 +2,34 @@
 
 使用 Godot 4.7.2 / GDScript，共用棋盘、AI 与联机代码，提供 Windows 原生 EXE 和已签名 Android APK。
 
-项目仓库：[and4s/GravityFour](https://github.com/and4s/GravityFour)。仓库保存源码、素材、测试和构建脚本；Windows / Android 安装包不放入 Git 历史，后续可通过 GitHub Releases 发布。
+项目仓库：[and4s/GravityFour](https://github.com/and4s/GravityFour)。仓库保存源码、素材、测试和构建脚本；Windows / Android 安装包不放入 Git 历史，安装包见 [v3.9.0 正式 Release](https://github.com/and4s/GravityFour/releases/tag/v3.9.0)。
+
+## 游戏截图
+
+以下为 v3.9 的演示对局与界面截图；移动端布局由桌面模拟预览生成。
+
+**Windows 三维棋盘**
+
+![Windows 版三维棋盘，展示红蓝棋子、双方头像及落子操作](docs/images/desktop-game.png)
+
+<table>
+  <tr>
+    <th>手机竖屏布局</th>
+    <th>系列赛比分结算</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/mobile-game.png" alt="手机竖屏棋盘与底部操作按钮" width="280"></td>
+    <td align="center"><img src="docs/images/series-score.png" alt="三局两胜系列赛的紧凑比分结算" width="280"></td>
+  </tr>
+  <tr>
+    <th>成就挑战</th>
+    <th>成就头像框</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/achievement-challenges.png" alt="困难 AI 战术挑战及对应奖励" width="280"></td>
+    <td align="center"><img src="docs/images/avatar-frames.png" alt="羽翼、王冠与宝石头像框及解锁条件" width="280"></td>
+  </tr>
+</table>
 
 ## 安装与开始
 
