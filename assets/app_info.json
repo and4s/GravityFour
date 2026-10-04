@@ -1,6 +1,7 @@
 {
   "author": "and4s",
-  "support_text": "打赏信息待填写。感谢你的支持！",
+  "support_text": "感谢你的支持！可在设置中查看作者的微信赞赏码。",
   "support_url": "",
-  "github_repo": "and4s/GravityFour"
+  "github_repo": "and4s/GravityFour",
+  "support_image": "res://assets/support_code.png"
 }

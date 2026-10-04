@@ -32,6 +32,7 @@ var header_box: BoxContainer
 var scroll_view: ScrollContainer
 var guide_check: CheckButton
 const Avatar = preload("res://scripts/avatar.gd")
+const SUPPORT_CODE = preload("res://assets/support_code.png")
 var avatar_preview: Control
 var room_avatar_icons: Array[Control] = []
 var series_choice: OptionButton
@@ -527,6 +528,7 @@ func _build_forms() -> void:
 	prefs.add_child(g.button("复位视角", reset_camera))
 	prefs.add_child(g.button("规则与联机帮助", show_help))
 
+	prefs.add_child(g.button("支持作者 / 赞赏码", show_support))
 	prefs.add_child(g.button("关于 / 作者 / 检查更新", show_about))
 	prefs.add_child(g.button("开源许可", show_licenses))
 	guide_check = CheckButton.new()
@@ -899,14 +901,33 @@ func show_match_detail(record_data: Dictionary) -> void:
 	box.add_child(g.button("退出回看 · 返回记录", show_history, true))
 	show_page("detail", "棋盘回看", "REPLAY / READ ONLY")
 
+func show_support() -> void:
+	var box := page("support",true)
+	var caption := text(box,"作者：and4s · 感谢你的支持！",18,JADE)
+	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var code := TextureRect.new()
+	code.name = "SupportCode"
+	code.texture = SUPPORT_CODE
+	code.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	code.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	code.custom_minimum_size = Vector2(0,420 if mobile else 460)
+	code.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	code.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(code)
+	var hint := text(box,"使用微信扫描赞赏码，或截图后在微信中识别。",15,MUTED)
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var actions: HBoxContainer = g.row()
+	actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	actions.add_child(g.button("返回设置",show_settings))
+	box.add_child(actions)
+	show_page("support","支持作者","THANK YOU")
+
 func show_about() -> void:
 	var box := page("about", true)
 	text(box, "三维重力四子棋 v" + g.UpdateChecker.VERSION, 22, JADE)
 	text(box, "作者：" + str(g.updater.info.get("author", "and4s")), 17)
 	text(box, str(g.updater.info.get("support_text", "打赏信息待填写")), 16, MUTED)
-	var support_url := str(g.updater.info.get("support_url", ""))
-	if support_url.begins_with("https://"):
-		box.add_child(g.button("支持作者 / 打赏", func() -> void: OS.shell_open(support_url)))
+	box.add_child(g.button("支持作者 / 赞赏码", show_support))
 	text(box,"GitHub：" + g.UpdateChecker.REPOSITORY_URL,16,JADE)
 	box.add_child(g.button("打开 GitHub 仓库",func() -> void: OS.shell_open(g.UpdateChecker.REPOSITORY_URL)))
 	update_status = text(box, g.updater.status, 15, MUTED)

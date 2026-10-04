@@ -4,7 +4,7 @@
 
 ## 作者、打赏和仓库
 
-编辑 `assets/app_info.json`：`author` 为作者署名（当前为 `and4s`），`support_text` 为打赏说明，`support_url` 可填写 HTTPS 打赏页面，`github_repo` 记录 `and4s/GravityFour`，实际仓库链接与更新端点固定于 `scripts/update_checker.gd`。空链接不会显示跳转按钮。随后重新构建，关于页面展示这些信息。
+编辑 `assets/app_info.json`：`author` 为作者署名（当前为 `and4s`），`support_text` 为打赏说明，`support_image` 为内置赞赏码图片路径，原图保存在 `assets/support_code.png`，`github_repo` 记录 `and4s/GravityFour`，实际仓库链接与更新端点固定于 `scripts/update_checker.gd`。支持作者入口在设置和关于页面中，显示内置原图；不需要访问外部页面。修改素材后需重新构建。
 
 “设置 → 关于 / 作者 / 检查更新”展示固定仓库链接，点击检查更新请求 `https://api.github.com/repos/and4s/GravityFour/releases/latest`，使用 HTTPS，不上传用户名、对局记录或成绩。旧设置中自定义的仓库地址不再用于更新。检查由按钮触发，未加入后台自动轮询。
 
